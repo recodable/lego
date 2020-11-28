@@ -1,0 +1,17 @@
+{
+  "name": "lego",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "prettier": "@recodable/prettier-config",
+  "scripts": {
+    "dev": "lerna run dev --stream",
+    "build": "lerna run build --stream"
+  },
+  "devDependencies": {
+    "@recodable/prettier-config": "^0.0.1",
+    "lerna": "^3.22.1",
+    "preact-cli": "^3.0.3",
+    "prettier": "^2.1.2"
+  }
+}
