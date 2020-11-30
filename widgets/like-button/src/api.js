@@ -2,10 +2,12 @@ const Koa = require('koa');
 const cors = require('@koa/cors');
 const Router = require('@koa/router');
 const PouchDB = require('pouchdb');
+const bodyParser = require('koa-bodyparser');
 
 const app = new Koa();
 
 app.use(cors());
+app.use(bodyParser());
 
 const db = new PouchDB('http://admin:password@localhost:5984/likes');
 
@@ -16,7 +18,6 @@ router.get('/', async (ctx) => {
     if (err.status === 404) return [];
     throw err;
   });
-  console.log(post.likes);
 
   ctx.body = {
     count: post.likes.length,
@@ -41,6 +42,7 @@ router.post('/', async (ctx) => {
         likes: [{ ip: ctx.request.ip }],
       });
   }
+
   ctx.response.status = 200;
 });
 

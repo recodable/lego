@@ -21,7 +21,7 @@ const App = () => {
       });
   }, []);
 
-  const update = () => fetch(endpoint, { method: 'POST' }).then(console.log);
+  const update = () => fetch(endpoint, { method: 'POST' });
 
   if (count === null) {
     return null;
