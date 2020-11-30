@@ -2,15 +2,30 @@ import { h } from 'preact';
 import { useState, useEffect } from 'preact/hooks';
 import './style/index.css';
 import { motion } from 'framer-motion';
+import 'whatwg-fetch';
+
+const url = window.location.href;
 
 const App = () => {
   const [liked, setLiked] = useState(false);
-  const [count, setCount] = useState(16);
+  const [count, setCount] = useState(null);
+  const endpoint = `http://localhost:3000?url=${url}`;
 
   useEffect(() => {
-    if (liked) setCount((prev) => prev + 1);
-    if (!liked) setCount((prev) => prev - 1);
-  }, [liked]);
+    window
+      .fetch(endpoint, { method: 'GET' })
+      .then((res) => res.json())
+      .then(({ count, liked }) => {
+        setCount(count);
+        setLiked(liked);
+      });
+  }, []);
+
+  const update = () => fetch(endpoint, { method: 'POST' }).then(console.log);
+
+  if (count === null) {
+    return null;
+  }
 
   return (
     <div className="flex justify-center items-center">
@@ -21,7 +36,11 @@ const App = () => {
         type="button"
         onClick={(e) => {
           e.preventDefault();
-          setLiked(!liked);
+          const newLiked = !liked;
+          setLiked(newLiked);
+          if (newLiked) setCount((prev) => prev + 1);
+          if (!newLiked) setCount((prev) => prev - 1);
+          update();
         }}
       >
         {!liked && (
