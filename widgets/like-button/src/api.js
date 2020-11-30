@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const Koa = require('koa');
 const cors = require('@koa/cors');
 const Router = require('@koa/router');
@@ -9,7 +11,7 @@ const app = new Koa();
 app.use(cors());
 app.use(bodyParser());
 
-const db = new PouchDB('http://admin:password@localhost:5984/likes');
+const db = new PouchDB(process.env.DATABASE_URL);
 
 const router = new Router();
 
@@ -48,4 +50,6 @@ router.post('/', async (ctx) => {
 
 app.use(router.routes()).use(router.allowedMethods());
 
-app.listen(3000, () => console.log('API listening on port 3000'));
+app.listen(process.env.API_PORT, () => {
+  console.log(`API listening on port ${process.env.API_PORT}`);
+});

@@ -1,4 +1,4 @@
-import { DefinePlugin } from 'webpack';
+const { parsed } = require('dotenv').config();
 
 export default (config, env, helpers) => {
   const postCssLoaders = helpers.getLoadersByName(config, 'postcss-loader');
@@ -9,11 +9,18 @@ export default (config, env, helpers) => {
     plugins.unshift(require('tailwindcss'));
   });
 
-  // config.plugins.push(
-  //   new DefinePlugin({
-  //     API_URL: env.production ? '' : 'http://localhost:3000',
-  //   }),
-  // );
+  const [{ plugin }] = helpers.getPluginsByName(config, 'DefinePlugin');
+
+  plugin.definitions = {
+    ...plugin.definitions,
+    ...Object.keys(parsed).reduce(
+      (env, key) => ({
+        ...env,
+        [`process.env.${key}`]: JSON.stringify(parsed[key]),
+      }),
+      {},
+    ),
+  };
 
   if (env.production) {
     config.output.libraryTarget = 'umd';

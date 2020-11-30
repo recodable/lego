@@ -9,7 +9,7 @@ const url = window.location.href;
 const App = () => {
   const [liked, setLiked] = useState(false);
   const [count, setCount] = useState(null);
-  const endpoint = `http://localhost:3000?url=${url}`;
+  const endpoint = `${process.env.API_URL}?url=${url}`;
 
   useEffect(() => {
     window
