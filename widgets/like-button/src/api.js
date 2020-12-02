@@ -17,7 +17,7 @@ const router = new Router();
 
 router.get('/', async (ctx) => {
   const post = await db.get(ctx.query.url).catch((err) => {
-    if (err.status === 404) return [];
+    if (err.status === 404) return { likes: [] };
     throw err;
   });
 
