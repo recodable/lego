@@ -1,7 +1,6 @@
 {
-  "private": true,
-  "name": "@recodable/like-button",
-  "version": "0.0.0",
+  "name": "@recodable/like-button-widget",
+  "version": "0.1.0",
   "license": "MIT",
   "scripts": {
     "build": "NODE_ENV=production preact build --no-prerender --clean --service-worker false",
@@ -9,7 +8,8 @@
     "dev": "preact watch",
     "dev:api": "nodemon src/api.js",
     "lint": "eslint src",
-    "test": "jest"
+    "test": "jest",
+    "dist": "yarn build && cp README.md build && cd build && yarn publish"
   },
   "eslintConfig": {
     "extends": "preact",

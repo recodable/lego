@@ -23,6 +23,7 @@ export default (config, env, helpers) => {
   };
 
   if (env.production) {
+    config.output.filename = '[name].js';
     config.output.libraryTarget = 'umd';
   }
 
