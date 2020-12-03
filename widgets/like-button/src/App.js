@@ -28,8 +28,11 @@ const App = () => {
   }
 
   return (
-    <div className="flex justify-center items-center">
+    <motion.div className="flex justify-center items-center">
       <motion.button
+        initial={{ scale: 0 }}
+        animate={{ scale: 1 }}
+        transition={{ duration: 0.2 }}
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.9 }}
         className="w-12 h-12 shadow-lg bg-white flex justify-center items-center rounded-full focus:ring-2 ring-red-100 focus:outline-none"
@@ -76,8 +79,14 @@ const App = () => {
         )}
       </motion.button>
 
-      <span className="font-semibold text-red-300 ml-3 text-sm">{count}</span>
-    </div>
+      <motion.span
+        className="font-semibold text-red-300 ml-3 text-sm"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+      >
+        {count}
+      </motion.span>
+    </motion.div>
   );
 };
 
