@@ -1,8 +1,20 @@
 import { h } from 'preact';
-import { useState, useEffect } from 'preact/hooks';
+import { useState, useEffect, useRef } from 'preact/hooks';
 import './style/index.css';
 import { motion } from 'framer-motion';
 import 'whatwg-fetch';
+
+function debounce(fn, delay) {
+  var timeoutID = null;
+  return function () {
+    clearTimeout(timeoutID);
+    var args = arguments;
+    var that = this;
+    timeoutID = setTimeout(function () {
+      fn.apply(that, args);
+    }, delay);
+  };
+}
 
 const url = window.location.href;
 
@@ -21,7 +33,9 @@ const App = () => {
       });
   }, []);
 
-  const update = () => fetch(endpoint, { method: 'POST' });
+  const update = useRef(
+    debounce(() => fetch(endpoint, { method: 'POST' }), 1000),
+  ).current;
 
   if (count === null) {
     return null;
