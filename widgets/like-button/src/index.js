@@ -14,10 +14,4 @@ const { render } = habitat(App);
  **
  **/
 
-render({
-  selector: '.like-button',
-  // defaultProps: undefined, // Default props for all widgets
-  // inline: false,
-  // clean: false,
-  // clientSpecified: false,
-});
+render({ inline: true });
