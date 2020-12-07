@@ -1,6 +1,6 @@
 {
-  "name": "@recodable/like-button-widget",
-  "version": "0.1.0",
+  "name": "like-button-widget",
+  "version": "0.1.2",
   "license": "MIT",
   "scripts": {
     "build": "NODE_ENV=production preact build --no-prerender --clean --service-worker false",

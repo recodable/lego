@@ -1,5 +1,6 @@
 {
   "packages": [
+    "apps/*",
     "widgets/*"
   ],
   "version": "0.0.0",
