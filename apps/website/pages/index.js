@@ -46,9 +46,9 @@ export default function Home() {
         </ol>
 
         <div className="absolute bottom-0 right-0 m-20">
-          <Widget
-            jsFile="https://unpkg.com/@recodable/like-button-widget@latest/bundle.js"
-            cssFile="https://unpkg.com/@recodable/like-button-widget@latest/bundle.49797.css"
+          <script
+            defer
+            src="https://unpkg.com/@recodable/like-button-widget@0.1.3/bundle.js"
           />
         </div>
       </main>
@@ -56,28 +56,28 @@ export default function Home() {
   );
 }
 
-function Widget({ jsFile, cssFile }) {
-  useEffect(() => {
-    const script = document.createElement('script');
+// function Widget({ jsFile, cssFile }) {
+//   useEffect(() => {
+//     const script = document.createElement('script');
 
-    script.src = jsFile;
-    script.defer = true;
+//     script.src = jsFile;
+//     script.defer = true;
 
-    document.body.appendChild(script);
+//     document.body.appendChild(script);
 
-    const link = document.createElement('link');
+//     const link = document.createElement('link');
 
-    link.type = 'text/css';
-    link.rel = 'stylesheet';
-    link.href = cssFile;
+//     link.type = 'text/css';
+//     link.rel = 'stylesheet';
+//     link.href = cssFile;
 
-    document.head.appendChild(link);
+//     document.head.appendChild(link);
 
-    return () => {
-      document.body.removeChild(script);
-      document.head.removeChild(link);
-    };
-  }, []);
+//     return () => {
+//       document.body.removeChild(script);
+//       document.head.removeChild(link);
+//     };
+//   }, []);
 
-  return <div className="like-button" />;
-}
+//   return <div className="like-button" />;
+// }
