@@ -1,5 +1,5 @@
 {
-  "name": "like-button-widget",
+  "name": "@recodable/like-button-widget",
   "version": "0.1.2",
   "license": "MIT",
   "scripts": {
@@ -9,7 +9,7 @@
     "dev:api": "nodemon src/api.js",
     "lint": "eslint src",
     "test": "jest",
-    "dist": "yarn build && cp README.md build && cd build && yarn publish"
+    "dist": "yarn build && cp README.md package.json build && cd build && yarn publish"
   },
   "eslintConfig": {
     "extends": "preact",
