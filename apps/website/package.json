@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "autoprefixer": "^10.0.4",
+    "framer-motion": "^2.9.5",
     "highlight.js": "^10.4.1",
     "next": "10.0.3",
     "postcss": "^8.1.14",

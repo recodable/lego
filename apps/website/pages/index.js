@@ -1,61 +1,18 @@
 import Head from 'next/head';
 import { useEffect, useRef, useState } from 'react';
 import { highlightBlock } from 'highlight.js';
-
-const availablePositions = [
-  { key: 'bottomRight', name: 'bottom right', value: 'bottom-0 right-0' },
-  { key: 'bottomLeft', name: 'bottom left', value: 'bottom-0 left-0' },
-];
-
-const availableDestinations = [
-  { key: 'html', name: 'HTML file', value: 'html' },
-  { key: 'react', name: 'React app', value: 'react' },
-  { key: 'vue', name: 'Vue app', value: 'vue' },
-];
-
-const instructions = [
-  {
-    destination: 'html',
-    position: null,
-    code: `<html lang="en">
-  <head>
-    <title>Your awesome website</title>
-  </head>
-  <body>
-    <!-- Add this like where you want the like button to be -->
-    <script defer src="https://unpkg.com/@recodable/like-button-widget@0.1.3/bundle.js"></script>
-  </body>
-</html>`,
-  },
-  {
-    destination: 'html',
-    position: 'bottomRight',
-    code: `<html lang="en">
-  <head>
-    <title>Your awesome website</title>
-  </head>
-  <body>
-    <script defer src="https://unpkg.com/@recodable/like-button-widget@0.1.3/bundle.js" data-position="bottomRight"></script>
-  </body>
-</html>`,
-  },
-  {
-    destination: 'html',
-    position: 'bottomLeft',
-    code: `<html lang="en">
-  <head>
-    <title>Your awesome website</title>
-  </head>
-  <body>
-    <script defer src="https://unpkg.com/@recodable/like-button-widget@0.1.3/bundle.js" data-position="bottomLeft"></script>
-  </body>
-</html>`,
-  },
-];
+import Arrow from '../components/Arrow';
+import { AnimatePresence, motion } from 'framer-motion';
+import Footer from '../components/Footer';
+import {
+  availablePositions,
+  availableDestinations,
+  instructions,
+} from '../data';
 
 export default function Home() {
   const codeBlock = useRef();
-  const [isFloating, setIsFloating] = useState(true);
+  const [isFloating, setIsFloating] = useState(false);
   const [positionIndex, setPositionIndex] = useState(0);
   const position = availablePositions[positionIndex];
   const [destinationIndex, setDestinationIndex] = useState(0);
@@ -65,7 +22,7 @@ export default function Home() {
     if (codeBlock.current) {
       highlightBlock(codeBlock.current);
     }
-  }, [destination, position]);
+  }, [destination, position, isFloating]);
 
   return (
     <div>
@@ -148,32 +105,43 @@ export default function Home() {
 
           <ol className="list-decimal text-xl font-light list-inside">
             <li className="my-8">
-              <span>In your HTML file</span>
+              <span>In your {destination.name}</span>
 
-              <pre
-                key={`${position.key}-${destination.key}`}
-                ref={codeBlock}
-                className="rounded-lg text-base mt-3"
+              <AnimatePresence
+                exitBeforeEnter
+                onExitComplete={() => highlightBlock(codeBlock.current)}
               >
-                <code className="language-html">
-                  {
-                    (
-                      instructions.find((instruction) => {
-                        if (isFloating)
+                <motion.pre
+                  key={`${isFloating ? position.key : 'noneFloating'}-${
+                    destination.key
+                  }`}
+                  ref={codeBlock}
+                  className="rounded-lg text-base mt-3"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                >
+                  <code className="language-js">
+                    {
+                      (
+                        instructions.find((instruction) => {
+                          if (!isFloating) {
+                            return (
+                              instruction.position === null &&
+                              instruction.destination === destination.key
+                            );
+                          }
+
                           return (
-                            instruction.position === null &&
+                            instruction.position === position.key &&
                             instruction.destination === destination.key
                           );
-
-                        return (
-                          instruction.position === position.key &&
-                          instruction.destination === destination.key
-                        );
-                      }) || {}
-                    ).code
-                  }
-                </code>
-              </pre>
+                        }) || {}
+                      ).code
+                    }
+                  </code>
+                </motion.pre>
+              </AnimatePresence>
             </li>
 
             <li>
@@ -183,21 +151,28 @@ export default function Home() {
         </div>
 
         {isFloating && (
-          <div className={`absolute ${position.value} m-20`}>
+          <div className={`fixed ${position.value} m-20`}>
+            <Arrow className="mb-4 text-blue-400" />
             <Widget />
           </div>
         )}
       </main>
+
+      <Footer />
     </div>
   );
 }
 
 function Widget() {
-  return <div className="bg-red-300 w-10 h-10" />;
-  // return (
-  //   <script
-  //     defer
-  //     src="https://unpkg.com/@recodable/like-button-widget@0.1.3/bundle.js"
-  //   />
-  // );
+  const container = useRef();
+
+  useEffect(() => {
+    const script = document.createElement('script');
+    script.src =
+      'https://unpkg.com/@recodable/like-button-widget@0.1.3/bundle.js';
+    script.defer = true;
+    container.current.appendChild(script);
+  }, [container.current]);
+
+  return <div ref={container} />;
 }
